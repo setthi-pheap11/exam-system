@@ -1,4 +1,6 @@
 import { pool } from '../../../config/db';
+import db from '@/config/db'; // Preferred alias
+
 
 export default async function handler(req, res) {
     if (req.method !== 'GET') {
