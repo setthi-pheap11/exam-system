@@ -135,7 +135,7 @@ export default function ExamPage() {
                 ))}
 
                 <button 
-                    className={`p-2 w-full mt-4 ${isWaiting || isExpired ? "bg-gray-400 cursor-not-allowed" : "bg-secondary text-white"}`}
+                    className={`p-2 w-full mt-4 ${isWaiting || isExpired ? "bg-gray-400 cursor-not-allowed" : "bg-secondary text-black"}`}
                     onClick={handleSubmit}
                     disabled={loading || isWaiting || isExpired}
                 >

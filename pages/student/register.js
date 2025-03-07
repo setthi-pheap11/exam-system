@@ -20,7 +20,7 @@ export default function StudentRegister() {
         <input placeholder="Full Name" className="border p-2 w-full mt-2" onChange={(e)=>setForm({...form,fullname:e.target.value})} />
         <input placeholder="Class" className="border p-2 w-full mt-2" onChange={(e)=>setForm({...form,class:e.target.value})} />
         <input placeholder="Year" className="border p-2 w-full mt-2" type="number" onChange={(e)=>setForm({...form,year:e.target.value})} />
-        <button className="bg-secondary text-white p-2 w-full mt-4" onClick={register}>Register</button>
+        <button className="bg-secondary text-black p-2 w-full mt-4" onClick={register}>Register</button>
       </div>
     </>
   );

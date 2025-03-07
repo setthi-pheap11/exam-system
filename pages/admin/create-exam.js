@@ -114,8 +114,8 @@ export default function CreateExam() {
           </div>
         ))}
 
-        <button className="bg-secondary text-white px-4 py-2 mt-4" onClick={addQuestion}>Add Question</button>
-        <button className="bg-primary text-white px-4 py-2 ml-4" onClick={saveExam}>Save Exam</button>
+        <button className="bg-secondary text-black px-4 py-2 mt-4" onClick={addQuestion}>Add Question</button>
+        <button className="bg-primary text-black px-4 py-2 ml-4" onClick={saveExam}>Save Exam</button>
 
         <h2 className="text-xl font-bold mt-8">Existing Exams</h2>
         <div className="border mt-2 rounded-lg overflow-hidden">

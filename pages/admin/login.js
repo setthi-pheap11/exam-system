@@ -23,7 +23,7 @@ export default function TeacherLogin() {
         <h1 className="text-2xl font-bold text-primary">Teacher Login</h1>
         <input className="border p-2 w-full mt-4" placeholder="Email" onChange={(e)=>setEmail(e.target.value)} />
         <input className="border p-2 w-full mt-2" placeholder="Password" type="password" onChange={(e)=>setPassword(e.target.value)} />
-        <button className="bg-secondary text-white p-2 w-full mt-4" onClick={loginTeacher}>Login</button>
+        <button className="bg-secondary text-black p-2 w-full mt-4" onClick={loginTeacher}>Login</button>
       </div>
     </>
   );

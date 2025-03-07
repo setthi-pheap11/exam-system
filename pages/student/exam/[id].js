@@ -53,7 +53,7 @@ export default function ExamAccessPage() {
                 <input placeholder="Class" className="border p-2 w-full mt-2" value={studentClass} onChange={(e) => setStudentClass(e.target.value)} />
                 <input placeholder="Year" className="border p-2 w-full mt-2" type="number" value={year} onChange={(e) => setYear(e.target.value)} />
 
-                <button className="bg-secondary text-white p-2 w-full mt-4" onClick={handleStudentRegister} disabled={loading}>
+                <button className="bg-secondary text-black p-2 w-full mt-4" onClick={handleStudentRegister} disabled={loading}>
                     {loading ? "Processing..." : "Start Exam"}
                 </button>
             </div>

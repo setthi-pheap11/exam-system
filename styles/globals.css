@@ -20,12 +20,12 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
   body {
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     background: #3d4963;
   }
 }

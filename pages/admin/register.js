@@ -18,7 +18,7 @@ export default function TeacherRegister() {
         <h1 className="text-2xl font-bold text-primary">Teacher Admin Registration</h1>
         <input className="border w-full p-2 mt-4" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
         <input className="border w-full p-2 mt-2" placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
-        <button className="bg-secondary text-white p-2 w-full mt-4" onClick={registerTeacher}>
+        <button className="bg-secondary text-black p-2 w-full mt-4" onClick={registerTeacher}>
           Register
         </button>
       </div>
