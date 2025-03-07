@@ -8,19 +8,17 @@ export default async function handler(req, res) {
     const { id } = req.query;
 
     try {
-        // ✅ Fix SQL query: Added GROUP BY clause
         const resultQuery = await pool.query(
             `SELECT 
                 e.title AS exam_title, 
                 s.fullname AS student_name, 
                 er.score, 
                 (SELECT COUNT(*) + 1 FROM exam_results WHERE score > er.score) AS rank,
-                (SELECT SUM(score) FROM exams WHERE id = er.exam_id) AS total_score
+                (SELECT SUM((q->>'score')::INTEGER) FROM jsonb_array_elements(e.questions) AS q) AS total_score
             FROM exam_results er
             JOIN students s ON er.student_id = s.id
             JOIN exams e ON er.exam_id = e.id
             WHERE er.exam_id = $1
-            GROUP BY e.title, s.fullname, er.score, er.exam_id
             ORDER BY er.score DESC`,
             [id]
         );

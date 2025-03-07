@@ -23,27 +23,24 @@ export default async function handler(req, res) {
         console.log(`✅ Student Found: ID ${studentId}`);
 
         // 🔴 Check if exam exists
-        const examQuery = await pool.query('SELECT * FROM exams WHERE id = $1', [exam_id]);
+        const examQuery = await pool.query('SELECT questions FROM exams WHERE id = $1', [exam_id]);
         if (examQuery.rows.length === 0) {
             console.error(`❌ Exam not found: ${exam_id}`);
             return res.status(404).json({ message: 'Exam not found' });
         }
 
-        const examData = examQuery.rows[0];
-        console.log(`✅ Exam Found:`, examData);
-
-        // ✅ Extract questions and correct answers
-        const questions = examData.questions;
+        const questions = examQuery.rows[0].questions;
         let totalScore = 0;
         let maxScore = 0;
 
+        // ✅ Calculate score properly
         questions.forEach((question, index) => {
             const correctAnswer = String(question.correctAnswer).trim();
-            const studentAnswer = String(answers[index]).trim();
+            const studentAnswer = String(answers[index] || '').trim(); // Handle unanswered questions
 
             maxScore += question.score; // Total possible score
 
-            if (studentAnswer === correctAnswer) {
+            if (studentAnswer && studentAnswer === correctAnswer) {
                 totalScore += question.score; // Add points if correct
             }
         });
