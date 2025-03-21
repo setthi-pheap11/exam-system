@@ -12,9 +12,9 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="container mx-auto py-10 max-w-3xl">
+      <main className="container mx-auto py-10 max-w-3xl flex-grow">
         <h1 className="text-3xl font-bold text-primary mb-4">Available Exams</h1>
         {exams.length === 0 ? (
           <p>No exams available yet.</p>
@@ -27,7 +27,8 @@ export default function Home() {
             </Link>
           ))
         )}
-      </div>
-    </>
+      </main>
+      <Footer />
+    </div>
   );
 }

@@ -1,8 +1,12 @@
 import Navbar from '../../components/Navbar'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useRouter } from 'next/router'
+import Footer from '../../components/Footer'
+
 
 export default function CreateExam() {
+  const router = useRouter()
   const [title, setTitle] = useState('');
   const [questions, setQuestions] = useState([]);
   const [exams, setExams] = useState([]);
@@ -10,9 +14,19 @@ export default function CreateExam() {
   const [endDate, setEndDate] = useState('');
   const [students, setStudents] = useState([]);
   const [showStudents, setShowStudents] = useState(false); //  Restored state
+  const [teacher, setTeacher] = useState(null);
 
   useEffect(() => {
-    fetchExams();
+    if (typeof window !== 'undefined') { // ✅ Ensure it's running on the client-side
+      const storedTeacher = JSON.parse(localStorage.getItem('teacher'));
+      
+      if (!storedTeacher || !storedTeacher.email) {
+        router.push('/admin/login'); // Redirect if not logged in
+      } else {
+        setTeacher(storedTeacher); // ✅ Set teacher state
+        fetchExams(); // Fetch exams only if logged in
+      }
+    }
   }, []);
 
   const fetchExams = async () => {
@@ -23,6 +37,11 @@ export default function CreateExam() {
       console.error("Error fetching exams:", error);
     }
   };
+  const logout = () => {
+    localStorage.removeItem('teacher'); // ✅ Clear session
+    router.push('/admin/login'); // Redirect to login page
+  };
+
 
   const fetchStudents = async () => {
     try {
@@ -87,10 +106,11 @@ const exportToCSV = () => {
     <>
       <Navbar />
       <div className="container mx-auto py-8">
+      <button onClick={logout} className="bg-red-500 text-white px-4 py-2 mt-4">Logout</button>
         <h1 className="text-2xl font-bold text-primary">Create Exam</h1>
 
         <input className="border p-2 w-full mt-4" placeholder="Exam Title" onChange={(e) => setTitle(e.target.value)} />
-
+        
         <input 
           className="border p-2 w-full mt-4" 
           type="datetime-local" 
@@ -227,5 +247,6 @@ const exportToCSV = () => {
         )}
       </div>
     </>
+    
   );
 }
