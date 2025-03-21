@@ -33,7 +33,8 @@ export default function ExamResult() {
     return (
         <>
             <Navbar />
-            <div className="max-w-2xl mx-auto py-10">
+            <div className="container mx-auto py-10 max-w-3xl mt-24">
+
                 <h1 className="text-2xl font-bold text-primary">Exam Result</h1>
 
                 <div className="mt-4 p-4 border rounded bg-gray-100">

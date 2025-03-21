@@ -25,7 +25,8 @@ export default function ExamList() {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto py-10 max-w-3xl relative">
+      <div className="container mx-auto py-10 max-w-3xl mt-24">
+
         <h1 className="text-2xl font-bold text-primary mb-4">Available Exams</h1>
 
         {/* ✅ Cursor-following effect */}
