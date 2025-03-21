@@ -45,6 +45,10 @@ dependencie
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.3.3"
+
+Note Create .env.local and set database
+Example : DATABASE_URL=postgresql://postgres:2003@localhost:5432/student_system
+
 ```
 
 
