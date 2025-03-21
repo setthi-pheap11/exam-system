@@ -47,6 +47,8 @@ dependencie
     "tailwindcss": "^3.3.3"
 
 Note Create .env.local and set database
+.env --> no
+.env.local --> yes
 Example : DATABASE_URL=postgresql://postgres:2003@localhost:5432/student_system
 
 ```
