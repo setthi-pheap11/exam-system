@@ -25,6 +25,13 @@ pm2 startup
 
 cmd check port list
 ps aux | grep node
+
+
+about version
+PS E:\exam-system> npm -v
+10.8.2
+PS E:\exam-system> node -v
+v18.20.7
 ```
 
 
