@@ -32,7 +32,9 @@ PS E:\exam-system> npm -v
 10.8.2
 PS E:\exam-system> node -v
 v18.20.7
-
+----
+just run npm run build after clone project
+----
 dependencie
  "dependencies": {
     "autoprefixer": "^10.4.20",
