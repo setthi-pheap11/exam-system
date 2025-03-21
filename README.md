@@ -8,7 +8,7 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
-```
+
 install server run anfd port and restart code
 npm install -g pm2
 
@@ -25,6 +25,8 @@ pm2 startup
 
 cmd check port list
 ps aux | grep node
+```
+
 
 
 
