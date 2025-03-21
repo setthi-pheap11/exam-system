@@ -9,6 +9,26 @@ npm run dev
 # or
 yarn dev
 ```
+install server run anfd port and restart code
+npm install -g pm2
+
+cmd for restart
+pm2 restart exam-system
+cmd for start run 
+pm2 start "npm run dev" --name exam-system
+check port list
+
+cmd save
+pm2 save
+cmd staratup
+pm2 startup
+
+cmd check port list
+ps aux | grep node
+
+
+
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
