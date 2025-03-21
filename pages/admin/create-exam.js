@@ -9,7 +9,7 @@ export default function CreateExam() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [students, setStudents] = useState([]);
-  const [showStudents, setShowStudents] = useState(false); // ✅ Restored state
+  const [showStudents, setShowStudents] = useState(false); //  Restored state
 
   useEffect(() => {
     fetchExams();
@@ -28,7 +28,7 @@ export default function CreateExam() {
     try {
       const res = await axios.get('/api/students/finished');
       setStudents(res.data);
-      setShowStudents(true); // ✅ Show students list when clicked
+      setShowStudents(true); //  Show students list when clicked
     } catch (error) {
       console.error("Error fetching students:", error);
     }
@@ -50,6 +50,28 @@ export default function CreateExam() {
     alert('Exam Created!');
     fetchExams();
   };
+
+const exportToCSV = () => {
+  if (!students.length) return;
+
+  const headers = ['Full Name', 'Email', 'Exam ID','Class' ,'Year','Score', 'Rank'];
+  const rows = students.map(s => [
+    s.fullname, s.email, s.exam_id, s.class, s.year, s.score, s.rank
+  ]);
+
+  let csvContent = "data:text/csv;charset=utf-8,"
+    + headers.join(",") + "\n"
+    + rows.map(r => r.join(",")).join("\n");
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "students_exam_results.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 
   const handleDeleteExam = async (id) => {
     if (!confirm("Are you sure you want to delete this exam?")) return;
@@ -154,13 +176,19 @@ export default function CreateExam() {
           </table>
         </div>
 
-        {/* ✅ Button to View Students Who Finished Exams */}
+       
         <button className="bg-blue-500 text-white px-4 py-2 mt-6" onClick={fetchStudents}>
           View Students Who Finished Exams
         </button>
-
-        {/* ✅ Display Students List */}
+        <button
+              className="bg-green-600 text-white px-4 py-2 mt-4 rounded"
+              onClick={exportToCSV}
+          >
+                Export to CSV
+            </button>
+    
         {showStudents && (
+          
           <div className="mt-6 border p-4 rounded-lg bg-black-100">
             <h2 className="text-lg font-bold mb-2">Students Who Finished Exams</h2>
             <table className="w-full border-collapse">
@@ -169,6 +197,8 @@ export default function CreateExam() {
                   <th className="p-2 border">Name</th>
                   <th className="p-2 border">Email</th>
                   <th className="p-2 border">Exam ID</th>
+                  <th className="p-2 border">Class</th>
+                  <th className="p-2 border">Year</th>
                   <th className="p-2 border">Score</th>
                   <th className="p-2 border">Rank</th>
                 </tr>
@@ -180,6 +210,8 @@ export default function CreateExam() {
                       <td className="p-2 border">{student.fullname}</td>
                       <td className="p-2 border">{student.email}</td>
                       <td className="p-2 border">{student.exam_id}</td>
+                      <td className="p-2 border">{student.class}</td>
+                      <td className="p-2 border">{student.year}</td>
                       <td className="p-2 border">{student.score}</td>
                       <td className="p-2 border">{student.rank}</td>
                     </tr>
