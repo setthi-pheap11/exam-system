@@ -16,23 +16,23 @@ export default function ExamPage() {
     const [waitingTime, setWaitingTime] = useState(null);
 
     useEffect(() => {
-        async function fetchExam() {
-            try {
-                const response = await axios.get(`/api/exams/${id}`);
-                setExam(response.data);
-
-                if (response.data.start_date && response.data.end_date) {
-                    const startTime = new Date(response.data.start_date).getTime();
-                    const endTime = new Date(response.data.end_date).getTime();
-                    checkExamTiming(startTime, endTime);
-                }
-            } catch (error) {
-                console.error("❌ Error loading exam:", error);
-            }
+        if (!id) return;
+      
+        // ✅ Retrieve the data we stored
+        const saved = sessionStorage.getItem(`examResult_${id}`);
+        if (!saved) {
+          setError("No result found for this exam.");
+          setLoading(false);
+          return;
         }
-
-        fetchExam();
-    }, [id]);
+      
+        const { totalScore, maxScore, answers } = JSON.parse(saved);
+        setScoreData({ totalScore, maxScore });
+        setAnswers(answers);
+      
+        // Optionally fetch the exam from /api/exams/${id} to display questions
+    
+      }, [id]);
 
     // ✅ Check Exam Timing (Start & End)
     const checkExamTiming = (startTime, endTime) => {
@@ -69,33 +69,27 @@ export default function ExamPage() {
     };
 
     const handleSubmit = async () => {
-        if (isExpired || isWaiting) return; // ⛔ Prevent submission if expired or waiting
-
-        const student = JSON.parse(sessionStorage.getItem('student'));
-        if (!student) {
-            alert("Please register first!");
-            router.push(`/student/exam/${id}`);
-            return;
-        }
-
         try {
-            setLoading(true);
-            await axios.post('/api/student/submit-exam', {
-                student,
-                exam_id: id,
-                answers
-            });
-
-            alert("Exam Submitted!");
-            router.push(`/student/exam/result/${id}`);
-
+          const response = await axios.post('/api/student/submit-exam', {
+            student,
+            exam_id: id,
+            answers
+          });
+      
+          // ✅ Save the result in sessionStorage
+          sessionStorage.setItem(`examResult_${id}`, JSON.stringify({
+            totalScore: response.data.totalScore,
+            maxScore: response.data.maxScore,
+            answers, // store student's answers
+          }));
+      
+          alert("Exam Submitted!");
+          router.push(`/student/exam/result/${id}`);
         } catch (error) {
-            console.error("❌ Submission Error:", error);
-            alert("Failed to submit exam. Please try again.");
-        } finally {
-            setLoading(false);
+          console.error("❌ Submission Error:", error);
+          alert("Failed to submit exam. Please try again.");
         }
-    };
+      };
 
     return (
         <>

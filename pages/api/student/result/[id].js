@@ -1,36 +1,44 @@
 import { pool } from '../../../../config/db';
 
 export default async function handler(req, res) {
-    if (req.method !== 'GET') {
-        return res.status(405).json({ error: 'Method Not Allowed' });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  const { id } = req.query;
+  const { email } = req.body;
+
+  if (!email) return res.status(400).json({ error: 'Missing student email' });
+
+  try {
+    const studentRes = await pool.query('SELECT id, fullname, class, year FROM students WHERE email = $1', [email]);
+    if (studentRes.rows.length === 0) return res.status(404).json({ error: 'Student not found' });
+
+    const student = studentRes.rows[0];
+
+    const result = await pool.query(`
+      SELECT er.score, er.answers, 
+             (SELECT SUM((q->>'score')::int) FROM jsonb_array_elements(e.questions) q) AS total_score
+      FROM exam_results er
+      JOIN exams e ON e.id = er.exam_id
+      WHERE er.student_id = $1 AND er.exam_id = $2
+      ORDER BY er.id DESC
+      LIMIT 1
+    `, [student.id, id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Result not found" });
     }
 
-    const { id } = req.query;
+    return res.status(200).json({
+      ...result.rows[0],
+      student_name: student.fullname,
+      student_class: student.class,
+      student_year: student.year,
+    });
 
-    try {
-        const resultQuery = await pool.query(
-            `SELECT 
-                e.title AS exam_title, 
-                s.fullname AS student_name, 
-                er.score, 
-                (SELECT COUNT(*) + 1 FROM exam_results WHERE score > er.score) AS rank,
-                (SELECT SUM((q->>'score')::INTEGER) FROM jsonb_array_elements(e.questions) AS q) AS total_score
-            FROM exam_results er
-            JOIN students s ON er.student_id = s.id
-            JOIN exams e ON er.exam_id = e.id
-            WHERE er.exam_id = $1
-            ORDER BY er.score DESC`,
-            [id]
-        );
-
-        if (resultQuery.rows.length === 0) {
-            return res.status(404).json({ error: "Result not found" });
-        }
-
-        return res.json(resultQuery.rows[0]);
-
-    } catch (error) {
-        console.error("Database error:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
-    }
+  } catch (error) {
+    console.error("❌ Error:", error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
 }
