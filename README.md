@@ -8,7 +8,57 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
+
+install server run anfd port and restart code
+npm install -g pm2
+
+cmd for restart
+pm2 restart exam-system
+cmd for start run 
+pm2 start "npm run dev" --name exam-system
+check port list
+
+cmd save
+pm2 save
+cmd staratup
+pm2 startup
+
+cmd check port list
+ps aux | grep node
+
+
+about version
+PS E:\exam-system> npm -v
+10.8.2
+PS E:\exam-system> node -v
+v18.20.7
+----
+just run npm run build after clone project
+----
+dependencie
+ "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "axios": "^1.8.1",
+    "dotenv": "^16.4.7",
+    "framer-motion": "^12.5.0",
+    "next": "^15.2.1",
+    "pg": "^8.13.3",
+    "postcss": "^8.5.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.3"
+
+Note Create .env.local and set database
+.env --> no
+.env.local --> yes
+Example : DATABASE_URL=postgresql://postgres:2003@localhost:5432/student_system
+
 ```
+
+
+
+
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
