@@ -62,6 +62,7 @@ export default function ExamResult() {
   <p><strong>👤 Student:</strong> {result.student_name}</p>
   <p><strong>🏫 Class:</strong> {result.student_class}</p>
   <p><strong>📅 Year:</strong> {result.student_year}</p>
+  <p><strong>🏆 Rank:</strong> #{result.rank}</p>
   <hr />
 
   {exam.questions.map((q, idx) => {
