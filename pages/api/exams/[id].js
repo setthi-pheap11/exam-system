@@ -1,5 +1,9 @@
 import { Pool } from 'pg';
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+import { DateTime } from 'luxon';
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 export default async function handler(req, res) {
   try {
@@ -13,21 +17,34 @@ export default async function handler(req, res) {
         return res.status(404).json({ error: 'Exam not found' });
       }
 
-      res.status(200).json(result.rows[0]); // ✅ Send the exam data properly
+      const exam = result.rows[0];
+
+      // ✅ Convert start_time and end_time to Cambodia time if they exist
+      if (exam.start_time) {
+        exam.start_time = DateTime.fromISO(exam.start_time).setZone('Asia/Phnom_Penh').toISO();
+      }
+
+      if (exam.end_time) {
+        exam.end_time = DateTime.fromISO(exam.end_time).setZone('Asia/Phnom_Penh').toISO();
+      }
+
+      res.status(200).json(exam);
     }
 
     else if (req.method === 'PUT') {
-      // ✅ Update exam title and questions
+      
       const { title, questions } = req.body;
+
       await pool.query(
         'UPDATE exams SET title = $1, questions = $2 WHERE id = $3',
         [title, JSON.stringify(questions), id]
       );
+
       res.status(200).json({ message: 'Exam updated successfully' });
     }
 
     else if (req.method === 'DELETE') {
-      // ✅ Delete the exam by ID
+      
       await pool.query('DELETE FROM exams WHERE id = $1', [id]);
       res.status(200).json({ message: 'Exam deleted successfully' });
     }
@@ -36,6 +53,7 @@ export default async function handler(req, res) {
       res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
       res.status(405).end(`Method ${req.method} Not Allowed`);
     }
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
