@@ -165,6 +165,7 @@ const exportToCSV = () => {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-300 text-left">
+                <th className="p-2 border">Exam ID</th>
                 <th className="p-2 border">Exam Title</th>
                 <th className="p-2 border">Start Date</th>
                 <th className="p-2 border">End Date</th>
@@ -175,6 +176,7 @@ const exportToCSV = () => {
               {exams.length > 0 ? (
                 exams.map((exam) => (
                   <tr key={exam.id} className="border">
+                    <td className="p-2 border">{exam.id}</td>
                     <td className="p-2 border">{exam.title}</td>
                     <td className="p-2 border">{exam.start_date ? new Date(exam.start_date).toLocaleString() : "Not Set"}</td>
                     <td className="p-2 border">{exam.end_date ? new Date(exam.end_date).toLocaleString() : "No Expiration"}</td>
